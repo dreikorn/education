@@ -1,3 +1,5 @@
 .idea
+*.iml
+*gopath*
 .DS_Store
 .vscode
