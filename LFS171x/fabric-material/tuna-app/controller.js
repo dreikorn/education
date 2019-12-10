@@ -183,8 +183,7 @@ return{
 
 		        // get an eventhub once the fabric client has a user assigned. The user
 		        // is required bacause the event registration must be signed
-		        let event_hub = fabric_client.newEventHub();
-		        event_hub.setPeerAddr('grpc://localhost:7053');
+		        let event_hub = channel.newChannelEventHub(peer);
 
 		        // using resolve the promise so that result status may be processed
 		        // under the then clause rather than having the catch clause process
@@ -208,7 +207,7 @@ return{
 		                    console.error('The transaction was invalid, code = ' + code);
 		                    resolve(return_status); // we could use reject(new Error('Problem with the tranaction, event status ::'+code));
 		                } else {
-		                    console.log('The transaction has been committed on peer ' + event_hub._ep._endpoint.addr);
+		                    console.log('The transaction has been committed on peer ' + event_hub.getPeerAddr());
 		                    resolve(return_status);
 		                }
 		            }, (err) => {
@@ -228,7 +227,6 @@ return{
 		    // check the results in the order the promises were added to the promise all list
 		    if (results && results[0] && results[0].status === 'SUCCESS') {
 		        console.log('Successfully sent transaction to the orderer.');
-		        res.send(tx_id.getTransactionID());
 		    } else {
 		        console.error('Failed to order the transaction. Error code: ' + response.status);
 		    }
@@ -405,8 +403,7 @@ return{
 
 		        // get an eventhub once the fabric client has a user assigned. The user
 		        // is required bacause the event registration must be signed
-		        let event_hub = fabric_client.newEventHub();
-		        event_hub.setPeerAddr('grpc://localhost:7053');
+		        let event_hub = channel.newChannelEventHub(peer);
 
 		        // using resolve the promise so that result status may be processed
 		        // under the then clause rather than having the catch clause process
@@ -430,7 +427,7 @@ return{
 		                    console.error('The transaction was invalid, code = ' + code);
 		                    resolve(return_status); // we could use reject(new Error('Problem with the tranaction, event status ::'+code));
 		                } else {
-		                    console.log('The transaction has been committed on peer ' + event_hub._ep._endpoint.addr);
+		                    console.log('The transaction has been committed on peer ' + event_hub.getPeerAddr());
 		                    resolve(return_status);
 		                }
 		            }, (err) => {
@@ -451,7 +448,6 @@ return{
 		    // check the results in the order the promises were added to the promise all list
 		    if (results && results[0] && results[0].status === 'SUCCESS') {
 		        console.log('Successfully sent transaction to the orderer.');
-		        res.json(tx_id.getTransactionID())
 		    } else {
 		        console.error('Failed to order the transaction. Error code: ' + response.status);
 		        res.send("Error: no tuna catch found");
